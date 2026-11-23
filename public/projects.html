@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stories</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="editor.css">
+<link rel="stylesheet" href="projects.css">
+<link rel="icon" href="data:,">
+</head>
+<body class="manager">
+<header class="pm-head">
+  <h1>Stories</h1>
+  <span class="pm-sub">Each story keeps its own clips.</span>
+  <span class="pm-spacer"></span>
+  <button id="newBtn" class="primary">+ New story</button>
+</header>
+
+<main class="pm-main">
+  <form class="pm-new" id="newForm" hidden>
+    <label for="newTitle">Story name</label>
+    <input id="newTitle" type="text" maxlength="120" required autocomplete="off">
+    <button class="primary" type="submit">Create</button>
+    <button type="button" id="newCancel">Cancel</button>
+  </form>
+  <p class="pm-msg" id="msg" role="status"></p>
+  <ul class="pm-grid" id="list" aria-label="Your stories"></ul>
+</main>
+
+<div class="ed-overlay" id="confirmOverlay" hidden>
+  <div class="ed-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <h3 id="confirmTitle">Delete story?</h3>
+    <p id="confirmText"></p>
+    <div class="ed-panel-actions">
+      <button id="confirmCancel">Cancel</button>
+      <button id="confirmOk" class="ed-danger">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="src/projects/projects.js"></script>
+</body>
+</html>

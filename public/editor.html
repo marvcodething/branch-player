@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Story Editor</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="editor.css">
+<link rel="icon" href="data:,">
+</head>
+<body class="editor">
+<div class="ed-shell">
+  <div class="ed-stage">
+    <main class="ed-canvas-wrap" id="canvasWrap" aria-label="Story map">
+      <div class="ed-canvas" id="canvas">
+        <svg class="ed-links" id="links" aria-hidden="true">
+          <defs>
+            <!-- One marker per edge type: Safari doesn't support fill="context-stroke" on markers. -->
+            <marker id="arrow-default" class="ed-mk default" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z"/></marker>
+            <marker id="arrow-choice" class="ed-mk choice" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z"/></marker>
+            <marker id="arrow-auto" class="ed-mk auto" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z"/></marker>
+          </defs>
+          <g id="edges"></g>
+          <line id="rubber" class="ed-rubber" hidden/>
+        </svg>
+        <div id="cards"></div>
+      </div>
+    </main>
+    <div class="ed-zoom" role="group" aria-label="Zoom">
+      <button id="zoomOut" title="Zoom out (-)" aria-label="Zoom out">−</button>
+      <button id="zoomLevel" title="Reset to 100% (1)">100%</button>
+      <button id="zoomIn" title="Zoom in (+)" aria-label="Zoom in">+</button>
+      <button id="zoomFit" title="Fit all nodes (0)">Fit</button>
+    </div>
+    <div class="ed-legend" aria-label="Edge legend">
+      <div class="ed-legend-title">Edges</div>
+      <div class="row"><svg width="34" height="10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" class="edge default"/></svg>Default choice (taken if the viewer doesn't pick)</div>
+      <div class="row"><svg width="34" height="10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" class="edge choice"/></svg>Other choice</div>
+      <div class="row"><svg width="34" height="10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" class="edge auto"/></svg>Continues automatically (only choice)</div>
+      <div class="row"><svg width="34" height="10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" class="edge choice loop"/></svg>Dashed: loops back to an earlier node</div>
+      <div class="ed-legend-hint">Hover an edge to see its choice text.</div>
+  </div>
+  </div>
+
+  <aside class="ed-panel" id="panel" hidden aria-label="Node editor">
+    <div class="ed-panel-head">
+      <h2 id="panelTitle">Node</h2>
+      <button id="panelClose">Close</button>
+    </div>
+    <div class="ed-field">
+      <label for="fLabel">Name</label>
+      <input id="fLabel" type="text">
+      <span class="ed-hint data" id="fId"></span>
+    </div>
+    <div class="ed-field" id="videoField">
+      <label for="fSource">Video</label>
+      <select id="fSource"></select>
+      <div class="ed-upload">
+        <button id="uploadBtn" type="button">Upload clip…</button>
+        <progress id="uploadBar" max="1" value="0" hidden></progress>
+      </div>
+      <span class="ed-hint" id="uploadMsg">Clips you upload belong to this story. You can also drop a video file here.</span>
+    </div>
+    <div class="ed-field">
+      <label for="fPrompt">Prompt</label>
+      <input id="fPrompt" type="text" placeholder="Shown above the choices">
+    </div>
+    <div class="ed-field">
+      <h2>Choices</h2>
+      <p class="ed-hint">The first choice is the default when the viewer doesn't pick. Drag from the yellow dot on a node's right edge to add one.</p>
+      <ol class="ed-choices" id="fChoices"></ol>
+    </div>
+    <details class="ed-field">
+      <summary>Overrides</summary>
+      <label for="fWindow">Choice window (seconds, blank = story default)</label>
+      <input id="fWindow" type="number" min="1" max="30" step="0.5">
+      <label for="fFallback">If the viewer doesn't pick</label>
+      <select id="fFallback">
+        <option value="">Story default</option>
+        <option value="first">Take the first choice</option>
+        <option value="random">Take a random choice</option>
+      </select>
+    </details>
+    <ul class="ed-problems" id="fProblems"></ul>
+    <div class="ed-panel-actions">
+      <button id="setStartBtn">Set as start</button>
+      <button id="deleteBtn" class="ed-danger">Delete node</button>
+    </div>
+  </aside>
+</div>
+
+<footer class="ed-bar">
+  <a class="ed-home" href="projects.html">← Stories</a>
+  <input class="ed-title" id="title" type="text" aria-label="Story title">
+  <span class="ed-status" id="status"></span>
+  <span class="ed-spacer"></span>
+  <button id="addBtn">+ Node</button>
+  <button id="clipsBtn">Clips</button>
+  <button id="saveBtn">Save</button>
+  <button id="exportBtn" title="Build and package this story as a static site you can host or embed">Export</button>
+  <button id="draftBtn" title="Fast, low-quality build for previewing">Draft play</button>
+  <button id="playBtn" class="primary">Play</button>
+</footer>
+
+<div class="ed-overlay" id="buildOverlay" hidden>
+  <div class="ed-dialog" role="dialog" aria-modal="true" aria-labelledby="buildTitle">
+    <h3 id="buildTitle">Building…</h3>
+    <pre class="ed-log data" id="buildLog"></pre>
+    <div id="exportInfo" hidden>
+      <p class="ed-hint">Upload the unzipped folder to any static host (Netlify, Cloudflare Pages, S3…), then embed it:</p>
+      <textarea class="ed-log data" id="embedSnippet" rows="3" readonly></textarea>
+      <p class="ed-hint">Replace <code>YOUR-HOST</code> with the folder's URL. The folder also contains <code>embed.html</code> with the postMessage events.</p>
+    </div>
+    <div class="ed-panel-actions">
+      <button id="copySnippet" hidden>Copy embed code</button>
+      <button id="buildClose" hidden>Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="ed-overlay" id="clipsOverlay" hidden>
+  <div class="ed-dialog" role="dialog" aria-modal="true" aria-labelledby="clipsTitle">
+    <h3 id="clipsTitle">Clips in this story</h3>
+    <ul class="ed-clips" id="clipsList"></ul>
+    <div class="ed-upload">
+      <button id="clipsUploadBtn" type="button">Upload clip…</button>
+      <progress id="clipsBar" max="1" value="0" hidden></progress>
+      <span class="ed-hint" id="clipsMsg"></span>
+    </div>
+    <div class="ed-panel-actions">
+      <button id="clipsClose">Close</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="src/editor/editor.js"></script>
+</body>
+</html>

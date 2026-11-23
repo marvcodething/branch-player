@@ -1,0 +1,27 @@
+/* Viewer page: the player alone, sized to fill whatever hosts it (a tab or an iframe). */
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #000; color: #fff; font-family: system-ui, -apple-system, sans-serif; }
+[hidden] { display: none !important; }
+body { display: grid; place-items: center; }
+#stage { position: relative; width: min(100vw, calc(100vh * 16 / 9)); aspect-ratio: 16/9; background: #000; overflow: hidden; contain: layout; }
+#stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.card { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; text-align: center; background: rgba(0,0,0,0.65); padding: 16px; }
+.card h1 { margin: 0 0 6px; font-size: clamp(1.1rem, 4vw, 1.8rem); }
+.card p { margin: 0 0 14px; opacity: 0.75; font-size: 0.9rem; }
+button { font: inherit; font-size: 0.85rem; padding: 6px 14px; border: 1px solid rgba(255,255,255,0.4); background: rgba(0,0,0,0.55); color: #fff; cursor: pointer; }
+button:hover:not(:disabled) { background: rgba(255,255,255,0.18); }
+button.primary { background: #fff; border-color: #fff; color: #000; font-weight: 600; padding: 8px 22px; }
+button.primary:hover:not(:disabled) { background: #ddd; }
+button:disabled { opacity: 0.45; cursor: default; }
+#bar { position: absolute; top: 8px; right: 8px; z-index: 15; display: flex; gap: 6px; opacity: 0; transition: opacity 0.2s; }
+#stage:hover #bar, #bar:focus-within { opacity: 1; }
+#choices { position: absolute; left: 0; right: 0; bottom: 0; z-index: 10; padding: 10px 12px 12px; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); display: grid; gap: 8px; }
+#choices .prompt { font-weight: 600; }
+.choice-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.choice { flex: 1 1 140px; padding: 9px 12px; text-align: left; display: flex; gap: 8px; align-items: center; }
+.choice kbd { font-family: ui-monospace, monospace; font-size: 0.72rem; border: 1px solid rgba(255,255,255,0.4); padding: 0 4px; opacity: 0.75; }
+.choice.picked { background: rgba(255,255,255,0.22); outline: 1px solid #fff; }
+.choice:disabled { opacity: 0.55; }
+.choice.picked:disabled { opacity: 1; }
+.countdown { height: 2px; background: rgba(255,255,255,0.2); }
+.countdown > div { height: 100%; background: #fff; }

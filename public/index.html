@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Branch Player</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <div class="col">
+      <section class="monitor" aria-label="Player">
+        <div id="stage">
+          <video id="video" playsinline></video>
+          <div class="card" id="startCard">
+            <div>
+              <h3 id="startTitle">Loading story…</h3>
+              <p id="startSub"></p>
+              <button class="primary" id="startBtn" disabled>Start</button>
+            </div>
+          </div>
+          <div class="card" id="endCard" hidden>
+            <div>
+              <h3>The end</h3>
+              <p>You reached an ending.</p>
+              <button class="primary" id="againBtn">Play again</button>
+            </div>
+          </div>
+          <div id="choices" hidden>
+            <div class="prompt" id="prompt"></div>
+            <div class="choice-row" id="choiceRow"></div>
+            <div class="countdown"><div id="countdownBar"></div></div>
+          </div>
+        </div>
+        <div class="transport">
+          <div class="transport-top">
+            <span class="now" id="nowName">Nothing playing</span>
+            <span class="status" id="pickStatus"></span>
+            <span class="tc data" id="timecode">00:00.00 / 00:00.00</span>
+          </div>
+          <div class="track" aria-hidden="true">
+            <div class="window" id="trackWindow"></div>
+            <div class="lock" id="trackLock"></div>
+            <div class="head" id="trackHead"></div>
+          </div>
+          <div class="transport-controls">
+            <button id="pauseBtn" disabled>Pause</button>
+            <button id="restartBtn" disabled>Restart</button>
+            <button id="muteBtn">Mute</button>
+            <span class="status">Keys 1–4 pick a choice while the window is open.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Handoff log</h2>
+        <div class="summary" id="summary"></div>
+        <div class="log" id="log"><p class="empty">Each transition appears here with the time between the last frame of one clip and the first frame of the next. One frame = seamless.</p></div>
+      </section>
+    </div>
+
+    <div class="col">
+      <section class="panel">
+        <h2>Story</h2>
+        <div class="story-meta data" id="storyMeta"></div>
+        <p class="story-meta"><a href="projects.html">← All stories</a> · <a id="editLink" href="projects.html">Edit story →</a> (needs <code>npm run dev</code>)</p>
+        <div class="nodes" id="nodes"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Prefetched next clips</h2>
+        <div class="preload" id="preload"><p class="empty">Fills when a clip with choices is playing.</p></div>
+      </section>
+
+      <section class="panel settings">
+        <h2>Settings</h2>
+        <div class="field">
+          <label for="choiceWindow">Choice window: <span class="data" id="choiceWindowOut"></span></label>
+          <input type="range" id="choiceWindow" min="1" max="10" step="0.5">
+          <span class="hint">How long before a clip ends the choices appear.</span>
+        </div>
+        <div class="field">
+          <label for="lockLead">Lock before end: <span class="data" id="lockLeadOut"></span></label>
+          <input type="range" id="lockLead" min="0.25" max="3" step="0.25">
+          <span class="hint">When the pick is committed and the next clip is appended.</span>
+        </div>
+        <div class="field">
+          <label for="fallback">If the viewer doesn't choose</label>
+          <select id="fallback">
+            <option value="first">Take the first option</option>
+            <option value="random">Take a random option</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="arMode">Aspect ratio priority</label>
+          <select id="arMode">
+            <option value="player">Player — fixed 16:9, letterbox video</option>
+            <option value="video">Video — stage follows clip dimensions</option>
+          </select>
+          <span class="hint">Video mode resizes the stage to match each clip's encoded dimensions.</span>
+        </div>
+        <div class="field">
+          <label><input type="checkbox" id="crossfadeToggle"> Audio crossfade at seams</label>
+          <span class="hint">Fades audio out before the seam and back in after. Uses Web Audio gain scheduling.</span>
+        </div>
+        <div class="field">
+          <label for="crossfadeDur">Crossfade duration: <span class="data" id="crossfadeDurOut">1.0 s</span></label>
+          <input type="range" id="crossfadeDur" min="0.2" max="2.0" step="0.1" value="1.0">
+          <span class="hint">Total dip length (half before the seam, half after).</span>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<script type="module" src="src/ui/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+/* Story manager. Colour tokens come from editor.css. */
+body.manager { min-height: 100vh; background: var(--ed-canvas); color: #fff; }
+body.manager button, body.manager .pm-btn { background: var(--ed-input); color: var(--ed-text); border-color: var(--ed-border); }
+body.manager button.primary { background: #1f9d55; border-color: #1f9d55; color: #fff; }
+body.manager button.primary:hover:not(:disabled) { background: #188046; }
+body.manager input { font: inherit; padding: 4px 6px; border: 1px solid var(--ed-border); background: var(--ed-input); color: var(--ed-text); min-width: 0; }
+body.manager button.ed-danger { color: #c62828; }
+
+.pm-head { display: flex; align-items: baseline; gap: 12px; padding: 16px max(16px, 4vw); }
+.pm-head h1 { margin: 0; font-size: 1.3rem; }
+.pm-sub { opacity: 0.7; }
+.pm-spacer { flex: 1; }
+.pm-head button { align-self: center; }
+.pm-main { padding: 0 max(16px, 4vw) 32px; display: grid; gap: 12px; }
+
+.pm-new { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; background: var(--ed-surface); color: var(--ed-text); padding: 10px 12px; border: 1px solid var(--ed-border); }
+.pm-new label { font-weight: 600; font-size: 0.78rem; color: var(--ed-muted); }
+.pm-new input { flex: 1 1 220px; }
+.pm-msg { margin: 0; min-height: 1.2em; }
+.pm-msg.err { color: var(--ed-error); }
+
+.pm-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.pm-card { background: var(--ed-surface); color: var(--ed-text); border: 1px solid var(--ed-border); padding: 12px; display: grid; gap: 8px; align-content: start; }
+body.manager .pm-card input.pm-title { font-size: 1rem; font-weight: 600; width: 100%; border-color: transparent; background: transparent; padding: 2px 4px; margin-left: -4px; }
+body.manager .pm-card input.pm-title:hover { border-color: var(--ed-border); }
+body.manager .pm-card input.pm-title:focus { border-color: var(--ed-accent); background: var(--ed-input); }
+.pm-meta { font-size: 0.75rem; color: var(--ed-muted); margin: 0; }
+.pm-meta .warn { color: #b26a00; }
+.pm-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.pm-actions .pm-spacer { flex: 1; }
+.pm-btn { font-size: 0.82rem; padding: 3px 10px; border: 1px solid var(--ed-border); text-decoration: none; cursor: pointer; }
+.pm-btn.primary { background: #1f9d55; border-color: #1f9d55; color: #fff; }
+.pm-btn[aria-disabled="true"] { opacity: 0.45; pointer-events: none; }
+.pm-empty { grid-column: 1 / -1; padding: 24px; text-align: center; opacity: 0.8; }

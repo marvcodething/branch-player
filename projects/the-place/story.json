@@ -1,0 +1,60 @@
+{
+  "title": "The Place",
+  "start": "start",
+  "output": {
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "crf": 22,
+    "maxrate": "5M",
+    "audioBitrate": "128k",
+    "segmentSeconds": 2
+  },
+  "defaults": {
+    "choiceWindow": 5,
+    "lockLead": 0.75,
+    "fallback": "first"
+  },
+  "nodes": {
+    "start": {
+      "label": "Start",
+      "source": "source/C0034.mp4",
+      "prompt": "",
+      "choices": [
+        {
+          "label": "choice 1",
+          "to": "node"
+        },
+        {
+          "label": "choice 2",
+          "to": "node-2"
+        }
+      ],
+      "editor": {
+        "x": 100,
+        "y": 100
+      }
+    },
+    "node": {
+      "label": "choice1",
+      "source": "source/C0035.mp4",
+      "prompt": "",
+      "choices": [],
+      "editor": {
+        "x": 300,
+        "y": 25
+      }
+    },
+    "node-2": {
+      "label": "choice2",
+      "source": "source/C0036.mp4",
+      "prompt": "",
+      "choices": [],
+      "editor": {
+        "x": 325,
+        "y": 200
+      }
+    }
+  }
+}

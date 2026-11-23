@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive story</title>
+<link rel="stylesheet" href="watch.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<div id="stage">
+  <video id="video" playsinline></video>
+  <div class="card" id="startCard">
+    <div>
+      <h1 id="startTitle">Loading…</h1>
+      <p id="startSub"></p>
+      <button class="primary" id="startBtn" disabled>Start</button>
+    </div>
+  </div>
+  <div class="card" id="endCard" hidden>
+    <div>
+      <h1>The end</h1>
+      <button class="primary" id="againBtn">Play again</button>
+    </div>
+  </div>
+  <div id="choices" hidden>
+    <div class="prompt" id="prompt"></div>
+    <div class="choice-row" id="choiceRow"></div>
+    <div class="countdown"><div id="countdownBar"></div></div>
+  </div>
+  <div id="bar">
+    <button id="muteBtn" aria-label="Mute">Mute</button>
+    <button id="fsBtn" aria-label="Fullscreen">Fullscreen</button>
+  </div>
+</div>
+<script type="module" src="src/ui/watch.js"></script>
+</body>
+</html>

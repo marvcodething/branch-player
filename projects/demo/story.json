@@ -1,0 +1,75 @@
+{
+  "title": "The Fork (demo)",
+  "start": "intro",
+  "output": {
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "crf": 22,
+    "maxrate": "5M",
+    "audioBitrate": "128k",
+    "segmentSeconds": 2
+  },
+  "defaults": {
+    "choiceWindow": 5,
+    "lockLead": 0.75,
+    "fallback": "first"
+  },
+  "nodes": {
+    "intro": {
+      "label": "The Fork",
+      "source": "source/intro.mp4",
+      "prompt": "Which way?",
+      "choices": [
+        {
+          "label": "Go left",
+          "to": "left"
+        }
+      ],
+      "editor": {
+        "x": -25,
+        "y": 75
+      }
+    },
+    "left": {
+      "label": "Left Path",
+      "source": "source/left.webm",
+      "prompt": "A door and a staircase.",
+      "choices": [
+        {
+          "label": "New choice",
+          "to": "node"
+        },
+        {
+          "label": "New choice",
+          "to": "node-2"
+        }
+      ],
+      "editor": {
+        "x": 275,
+        "y": 125
+      }
+    },
+    "node": {
+      "label": "door",
+      "source": "source/door.webm",
+      "prompt": "",
+      "choices": [],
+      "editor": {
+        "x": 550,
+        "y": 150
+      }
+    },
+    "node-2": {
+      "label": "staircase",
+      "source": "source/stairs.mp4",
+      "prompt": "",
+      "choices": [],
+      "editor": {
+        "x": 600,
+        "y": -225
+      }
+    }
+  }
+}
